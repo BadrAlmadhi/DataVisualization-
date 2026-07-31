@@ -1,34 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-    <Head>
-        <meta charset="UTF-8">
-        <meta
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
-        >
-        <title>Pokemon Data Visualization </title>
-        <link rel="stylesheet" href="style.css">
-        <script src="http://d3js.org/d3.v7.min.js"></script>
-    </Head>
-    <body>
-        <header>
-            <h1>Pokemon Data Visualization</h1>
-            <p>
-                Exploer Pokemon statistic by attack, defence, speed, and type.
-            </p>
-        </header>
-        <main>
-            <section class="controls">
-                    <button id="reset-button">Reset Visualization</button>
-            </section>
-            <section class="chart-section">
-                <h2>Attack vs. Defense </h2>
-                <p>
-                    Each circile represent one Pokemon
-                </p>
-                <div id="scatter-plot"></div>
+    >
 
-            </section>
-        </main>
-    </body>
+    <title>Pokémon Data Visualization</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Pokémon Data Visualization</h1>
+
+        <p>
+            Explore Pokémon statistics by attack, defense, speed, and type.
+        </p>
+    </header>
+
+    <main>
+        <section class="controls">
+            <button id="reset-button">Reset Visualization</button>
+        </section>
+
+        <section class="chart-section">
+            <h2>Attack vs. Defense</h2>
+
+            <p>
+                Each circle represents one Pokémon.
+            </p>
+
+            <div id="scatter-plot"></div>
+        </section>
+
+        <section class="chart-section">
+            <h2>Number of Pokémon by Type</h2>
+
+            <p>
+                Click a bar to filter the Pokémon shown in the scatter plot.
+            </p>
+
+            <div id="bar-chart"></div>
+        </section>
+    </main>
+
+    <div id="tooltip"></div>
+
+    <script src="script.js"></script>
+
+</body>
+
 </html>
