@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <Head>
+        <meta charset="UTF-8">
+        <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+        >
+        <title>Pokemon Data Visualization </title>
+        <link rel="stylesheet" href="style.css">
+        <script src="http://d3js.org/d3.v7.min.js"></script>
+    </Head>
+    <body>
+        <header>
+            <h1>Pokemon Data Visualization</h1>
+            <p>
+                Exploer Pokemon statistic by attack, defence, speed, and type.
+            </p>
+        </header>
+        <main>
+            <section class="controls">
+                    <button id="reset-button">Reset Visualization</button>
+            </section>
+            <section class="chart-section">
+                <h2>Attack vs. Defense </h2>
+                <p>
+                    Each circile represent one Pokemon
+                </p>
+                <div id="scatter-plot"></div>
+
+            </section>
+        </main>
+    </body>
+</html>
