@@ -161,5 +161,128 @@ function createBarChart(data) {
         "Pokémon"
     );
 
-    // Group member 2 writes the bar chart here
-}
+    // Count how many Pokemon have each primary type
+    const typeCounts = d3.rollups(
+        data, 
+        function(pokemonInGroup){
+            return pokemonInGroup.length;
+        },
+        function(pokemon){
+            return pokemon.type1;
+        }
+    ).map(function(pair){
+        return {
+            type: pair[0],
+            count: pair[1]
+        };
+    }).sort(function(a, b) {
+        return b.count - a.count;
+    });
+
+    console.log("Type counts:", typeCounts);
+    
+    const width = 800;
+    const height = 500;
+
+    const margin = {
+        top: 30,
+        right: 30,
+        bottom: 100,
+        left: 70
+    };
+
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    const svg = d3.select("#bar-chart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    const chart = svg
+        .append("g")
+        .attr(
+            "transform",
+            `translate(${margin.left}, ${margin.top})`
+        );
+    
+    const xScale = d3.scaleBand()
+        .domain(typeCounts.map(function(typeCount){
+            return typeCount.type;
+        }))
+        .range([0, chartWidth])
+        .padding(0.2);
+    
+    const xAxis = d3.axisBottom(xScale);
+
+    chart.append("g")
+        .attr(
+            "transform",
+            `translate(0, ${chartHeight})`
+        )
+        .call(xAxis)
+        .selectAll("text")
+        .attr("transform", "rotate(-45")
+        .attr("text-anchor", "end");
+
+        chart.append("text")
+            .attr("x", chartWidth / 2)
+            .attr("y", chartHeight + 85)
+            .attr("text-anchor", "middle")
+            .text("Primary Type");
+
+        const yScale = d3.scaleLinear()
+            .domain([
+                0, 
+                d3.max(typeCounts, function(typeCount) {
+                    return typeCount.count;
+                })
+            ])
+            .range([chartHeight, 0])
+            .nice();
+
+            const yAxis = d3.axisLeft(yScale);
+
+            chart.append("g")
+                .call(yAxis);
+
+            chart.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -chartHeight / 2)
+                .attr("y", -45)
+                .attr("text-anchor", "middle")
+                .text("Number of Pokémon");
+
+            const tooltip = d3.select("#tooltip");
+
+            chart.selectAll("rect")
+                .data(typeCounts)
+                .join("rect")
+                .attr("x", function(typeCount){
+                    return xScale(typeCount.type);
+                })
+                .attr("y", function(typeCount){
+                    return yScale(typeCount.count);
+                })
+                .attr("width", xScale.bandwidth())
+                .attr("height", function(typeCount){
+                    return chartHeight - yScale(typeCount.count);
+                })
+                .attr("fill", "steelblue")
+                .on("mouseover", function(event, typeCount){
+                    tooltip
+                        .style("display", "block")
+                        .html(`
+                            <strong>${typeCount.type}</strong><br>
+                            Count: ${typeCount.count}
+                            `);
+                })
+                .on("mousemove", function(event) {
+                    tooltip
+                        .style("left", `${event.pageX + 12}px`)
+                        .style("top", `${event.pageY + 12}px`);
+                })
+                .on("mouseout", function() {
+                    tooltip.style("display", "none");
+                });
+            }
