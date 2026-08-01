@@ -37,7 +37,105 @@ function createScatterPlot(data) {
         "Pokémon"
     );
 
-    // Group member 1 writes the scatter plot here
+    const width = 800;
+    const height = 500;
+
+    const margin = {
+        top: 30,
+        right: 30,
+        bottom: 60,
+        left: 70
+    };
+
+    const charWidth =
+        width - margin.left - margin.right;
+
+    const charHeight =
+        height - margin.top - margin.bottom;
+
+    // now draw area is 700
+
+    const svg = d3.select("#scatter-plot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+
+        console.log("Scatter plot svg created:", svg)
+    
+        // g can be several shapes group
+    const chart = svg
+        .append("g")
+        .attr(
+            "transform",
+            `translate(${margin.left}, ${margin.top})`
+        );
+    
+    const xScale = d3.scaleLinear()
+        .domain([
+             0,
+             d3.max(data, function (pokemon){
+                return pokemon.attack;
+            })
+        ])
+        .range([0, charWidth])
+        .nice();
+    
+    const xAxis = d3.axisBottom(xScale);
+
+    chart.append("g")
+        .attr(
+            "transform",
+            `translate(0, ${charHeight})`
+        )
+        .call(xAxis)
+
+    const yScale = d3.scaleLinear()
+        .domain([
+            0,
+            d3.max(data, function(pokemon){
+                return pokemon.defense
+            })
+        ])
+        .range([charHeight, 0])
+        .nice();
+    
+    const yAxis = d3.axisLeft(yScale);
+    chart.append("g")
+        .call(yAxis);
+
+        const tooltip = d3.select("#tooltip");
+        // add all data in circles 
+    chart.selectAll("circle")
+        .data(data)
+        .join("circle")
+        .attr("cx", function(pokemon){
+            return xScale(pokemon.attack);
+        })
+        .attr("cy", function(pokemon){
+            return yScale(pokemon.defense);
+        })
+        .attr("r", 4)
+        .attr("fill", "steelblue")
+        .attr("opacity", 0.7)
+        .on("mouseover", function(event, pokemon){
+            tooltip
+                .style("display", "block")
+                .html(`
+                    <strong>${pokemon.name}</strong><br>
+                    Type: ${pokemon.type1}<br>
+                    Attack: ${pokemon.attack}<br>
+                    Defence: ${pokemon.defense}
+                    `);
+        })
+        .on("mousemove", function(event) {
+            tooltip
+                .style("left", `${event.pageX + 12}px`)
+                .style("top", `${event.pageY + 12}px`);
+        })
+        .on("mouseout", function() {
+            tooltip.style("display", "none");
+        });
+        
 }
 
 function createBarChart(data) {

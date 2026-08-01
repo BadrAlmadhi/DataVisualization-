@@ -16,3 +16,15 @@ button {
     padding: 8px 16px;
     cursor: pointer;
 }
+
+#tooltip {
+    position: absolute;
+    background: white;
+    border: 1px solid gray;
+    padding: 8px;
+    border-radius: 5px;
+
+    display: none;
+
+    pointer-events: none;
+}
