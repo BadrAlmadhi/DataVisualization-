@@ -89,6 +89,12 @@ function createScatterPlot(data) {
         )
         .call(xAxis)
 
+    chart.append("text")
+        .attr("x", charWidth /2)
+        .attr("y", charHeight + 45)
+        .attr("text-anchor", "middle")
+        .text("Attack Stats")
+
     const yScale = d3.scaleLinear()
         .domain([
             0,
@@ -103,8 +109,18 @@ function createScatterPlot(data) {
     chart.append("g")
         .call(yAxis);
 
+    
+    chart.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -charHeight /2)
+        .attr("y", - 45)
+        .attr("text-anchor", "middle")
+        .text("Defense Stats")
+
+
         const tooltip = d3.select("#tooltip");
         // add all data in circles 
+
     chart.selectAll("circle")
         .data(data)
         .join("circle")
