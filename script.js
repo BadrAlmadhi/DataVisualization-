@@ -187,7 +187,7 @@ function createBarChart(data) {
     const margin = {
         top: 30,
         right: 30,
-        bottom: 100,
+        bottom: 80,
         left: 70
     };
 
@@ -222,14 +222,20 @@ function createBarChart(data) {
         )
         .call(xAxis)
         .selectAll("text")
-        .attr("transform", "rotate(-45")
-        .attr("text-anchor", "end");
+        .attr("transform", "rotate(-60)")
+        .attr("text-anchor", "end")
+        .attr("dx", "-0.6em")
+        .attr("dy", "-0.15em")
+        .style("font-size", "8px");
 
         chart.append("text")
             .attr("x", chartWidth / 2)
             .attr("y", chartHeight + 85)
             .attr("text-anchor", "middle")
-            .text("Primary Type");
+            .attr("dy", function(type, index) {
+                return index % 2 === 0 ? "1em" : "3em";
+            })
+            .style("font-size", "3px");
 
         const yScale = d3.scaleLinear()
             .domain([
@@ -247,11 +253,10 @@ function createBarChart(data) {
                 .call(yAxis);
 
             chart.append("text")
-                .attr("transform", "rotate(-90)")
                 .attr("x", -chartHeight / 2)
-                .attr("y", -45)
+                .attr("y", chartHeight + 85)
                 .attr("text-anchor", "middle")
-                .text("Number of Pokémon");
+                .text("Primary Type");
 
             const tooltip = d3.select("#tooltip");
 
