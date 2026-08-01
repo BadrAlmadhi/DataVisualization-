@@ -1,5 +1,6 @@
 const DATA_PATH = "data/pokemon.csv";
 
+
 d3.csv(DATA_PATH)
     .then(function(newData) {
 
@@ -25,6 +26,10 @@ d3.csv(DATA_PATH)
 
         createScatterPlot(pokemonData);
         createBarChart(pokemonData);
+
+        d3.select("#reset-button").on("click", function() {
+            d3.select("#scatter-plot").selectAll("circle").style("display", null);
+        });
     })
     .catch(function(error) {
         console.error("Error loading dataset:", error);
@@ -230,12 +235,9 @@ function createBarChart(data) {
 
         chart.append("text")
             .attr("x", chartWidth / 2)
-            .attr("y", chartHeight + 85)
+            .attr("y", chartHeight + 65)
             .attr("text-anchor", "middle")
-            .attr("dy", function(type, index) {
-                return index % 2 === 0 ? "1em" : "3em";
-            })
-            .style("font-size", "3px");
+            .text("Primary Type");
 
         const yScale = d3.scaleLinear()
             .domain([
@@ -253,10 +255,11 @@ function createBarChart(data) {
                 .call(yAxis);
 
             chart.append("text")
+                .attr("transform", "rotate(-90)")
                 .attr("x", -chartHeight / 2)
-                .attr("y", chartHeight + 85)
+                .attr("y", -45)
                 .attr("text-anchor", "middle")
-                .text("Primary Type");
+                .text("Number of Pokémon");
 
             const tooltip = d3.select("#tooltip");
 
@@ -289,5 +292,14 @@ function createBarChart(data) {
                 })
                 .on("mouseout", function() {
                     tooltip.style("display", "none");
+                })
+                .on("click", function(event, typeCount){
+                    d3.select("#scatter-plot")
+                    .selectAll("circle")
+                    .style("display", function(pokemon){
+                        return pokemon.type1 === typeCount.type
+                        ? null :
+                        "none";
+                    });
                 });
             }
